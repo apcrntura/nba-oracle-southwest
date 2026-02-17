@@ -1,0 +1,9 @@
+{
+  "SouthwestDivision": {
+    "Dallas Mavericks": { "playoffProbability": 0.82 },
+    "Houston Rockets": { "playoffProbability": 0.45 },
+    "Memphis Grizzlies": { "playoffProbability": 0.60 },
+    "New Orleans Pelicans": { "playoffProbability": 0.70 },
+    "San Antonio Spurs": { "playoffProbability": 0.25 }
+  }
+}
