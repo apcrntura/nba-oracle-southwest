@@ -5,5 +5,28 @@
 </head>
 <body>
   <h2>Hello Southwest Division!</h2>
+  <script>
+  async function loadPredictions() {
+    try {
+      const response = await fetch('predictions.json');
+      const data = await response.json();
+
+      const container = document.getElementById('predictions');
+      const teams = data.SouthwestDivision;
+
+      for (const team in teams) {
+        const prob = (teams[team].playoffProbability * 100).toFixed(1);
+        const p = document.createElement('p');
+        p.textContent = `${team}: ${prob}% chance of playoffs`;
+        container.appendChild(p);
+      }
+    } catch (error) {
+      console.error("Error loading predictions:", error);
+    }
+  }
+
+  loadPredictions();
+</script>
+
 </body>
 </html>
