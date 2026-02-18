@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:   # allows manual runs from GitHub Actions tab
 
 jobs:
   deploy:
@@ -13,22 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js (optional if you build assets)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      # If you have a build step (npm run build), add it here
+      # Optional: add a build step if you compile assets
       # - name: Build project
       #   run: npm run build
 
       - name: Upload to Azure Storage
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.67.0
+          azcliversion: 2.83.0
           inlineScript: |
             az storage blob upload-batch \
               --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
               --destination '$web' \
-              --source . \
+              --source dist \
               --overwrite
