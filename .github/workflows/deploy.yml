@@ -1,4 +1,4 @@
-name: Deploy to Azure Blob Storage
+name: Deploy to Azure Storage
 
 on:
   push:
@@ -10,16 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Upload files to Azure Blob Storage
-      uses: azure/cli@v1
-      with:
-        inlineScript: |
-          az storage blob upload-batch \
-            --connection-string "$AZURE_STORAGE_CONNECTION_STRING" \
-            -s . \
-            -d $web
-      env:
-        AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      - name: Set up Node.js (optional if you build assets)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # If you have a build step (npm run build), add it here
+      # - name: Build project
+      #   run: npm run build
+
+      - name: Upload to Azure Storage
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.67.0
+          inlineScript: |
+            az storage blob upload-batch \
+              --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" \
+              --destination '$web' \
+              --source . \
+              --overwrite
