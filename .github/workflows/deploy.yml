@@ -13,9 +13,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Install Azure CLI
-      run: |
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    - name: Set up Azure CLI
+      uses: azure/cli@v1
 
     - name: Upload files to Azure Blob Storage
       env:
@@ -24,4 +23,4 @@ jobs:
         az storage blob upload-batch \
           --connection-string "$AZURE_STORAGE_CONNECTION_STRING" \
           -s . \
-          -d '$web'
+          -d $web
