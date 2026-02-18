@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NBA Oracle - Southwest Division</title>
+  <title>NBA Oracle Southwest</title>
 </head>
 <body>
-  <h2>Southwest Division Playoff Probabilities</h2>
-  <div id="southwest-container"></div>
+  <h2>Southwest Division Playoff Predictions</h2>
+  <div id="predictions"></div>
 
-  <!-- Paste your script here -->
+  <h2>Hello Southwest Division!</h2>
+
   <script>
-    fetch('predictions.json')
-      .then(response => response.json())
-      .then(data => {
-        const southwest = data.SouthwestDivision;
-        const container = document.getElementById("southwest-container");
+    async function loadPredictions() {
+      try {
+        const response = await fetch('predictions.json');
+        const data = await response.json();
 
-        for (const team in southwest) {
-          const prob = southwest[team].playoffProbability;
-          const teamDiv = document.createElement("div");
-          teamDiv.textContent = `${team}: ${(prob * 100).toFixed(1)}%`;
-          container.appendChild(teamDiv);
+        const container = document.getElementById('predictions');
+        const teams = data.SouthwestDivision;
+
+        for (const team in teams) {
+          const prob = (teams[team].playoffProbability * 100).toFixed(1);
+          const p = document.createElement('p');
+          p.textContent = `${team}: ${prob}% chance of playoffs`;
+          container.appendChild(p);
         }
-      })
-      .catch(error => console.error("Error loading predictions:", error));
+      } catch (error) {
+        console.error("Error loading predictions:", error);
+      }
+    }
+
+    loadPredictions();
   </script>
 </body>
 </html>
